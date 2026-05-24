@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SecPosture — Assess your cloud security posture in under 10 minutes. Free, client-side only, no data collected.">
+  <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self' https://arnav.au https://*.arnav.au">
+  <title>SecPosture — Cloud Security Posture Checker</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%232563eb' d='M16 2L4 7v9c0 7 5.4 13.5 12 15 6.6-1.5 12-8 12-15V7L16 2z'/%3E%3Cpath fill='%23fff' d='M13 16.5l-2.5-2.5-1.5 1.5 4 4 8-8-1.5-1.5z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-brand">
+      <svg class="header-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path fill="#2563eb" d="M16 2L4 7v9c0 7 5.4 13.5 12 15 6.6-1.5 12-8 12-15V7L16 2z"/>
+        <path fill="#fff" d="M13 16.5l-2.5-2.5-1.5 1.5 4 4 8-8-1.5-1.5z"/>
+      </svg>
+      <span class="header-title">SecPosture</span>
+      <span class="header-by">by <a href="https://arnav.au/tools/" target="_blank" rel="noopener">arnav.au</a></span>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main>
+
+    <!-- Screen 1: Welcome -->
+    <div id="screen-welcome" class="screen active">
+      <div class="welcome-hero">
+        <h1>SecPosture</h1>
+        <p class="tagline">Assess your cloud security posture in under 10 minutes</p>
+      </div>
+
+      <div class="welcome-form">
+        <div class="form-section">
+          <label>Cloud Platform</label>
+          <div class="option-grid four-col">
+            <button class="option-btn cloud-btn" data-value="azure">Azure</button>
+            <button class="option-btn cloud-btn" data-value="aws">AWS</button>
+            <button class="option-btn cloud-btn" data-value="gcp">GCP</button>
+            <button class="option-btn cloud-btn" data-value="multi">Multi-Cloud</button>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <label>Organisation Profile</label>
+          <div class="option-grid">
+            <button class="option-btn profile-btn" data-value="Startup">Startup</button>
+            <button class="option-btn profile-btn" data-value="SMB">SMB</button>
+            <button class="option-btn profile-btn" data-value="Enterprise">Enterprise</button>
+            <button class="option-btn profile-btn" data-value="Regulated Industry">Regulated Industry</button>
+          </div>
+        </div>
+
+        <button id="btn-start" class="btn-primary" disabled>Start Assessment</button>
+      </div>
+    </div>
+
+    <!-- Screen 2: Questionnaire -->
+    <div id="screen-questionnaire" class="screen">
+      <div class="q-header">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+        <div class="q-meta">
+          <span class="q-domain-label" id="domain-name"></span>
+          <span class="q-step-label" id="domain-step"></span>
+        </div>
+      </div>
+
+      <div class="question-list" id="question-list"></div>
+
+      <div class="q-nav">
+        <button class="btn-secondary" id="btn-back" disabled>Back</button>
+        <button class="btn-next" id="btn-next" disabled>Next</button>
+      </div>
+    </div>
+
+    <!-- Screen 3: Results -->
+    <div id="screen-results" class="screen">
+
+      <div class="results-header">
+        <div class="overall-score-block">
+          <div class="overall-score-label">Overall Score</div>
+          <div class="overall-score-value" id="overall-score-value">—</div>
+          <div id="overall-score-badge" class="overall-score-badge"></div>
+        </div>
+        <div class="results-actions">
+          <button class="btn-ai" id="btn-ai-summary">Generate AI Summary</button>
+          <button class="btn-outline" id="btn-download">Download Report</button>
+        </div>
+      </div>
+
+      <!-- Domain bar chart -->
+      <div class="section-title">Domain Breakdown</div>
+      <div class="domain-bars" id="domain-bars"></div>
+
+      <!-- Quick Wins -->
+      <div class="quick-wins">
+        <div class="section-title">Quick Wins</div>
+        <div id="quick-wins-list"></div>
+      </div>
+
+      <!-- Findings -->
+      <div class="findings-section">
+        <div class="section-title">Findings</div>
+        <div id="findings-list"></div>
+      </div>
+
+      <!-- Covered -->
+      <div class="findings-section">
+        <div class="section-title">Covered</div>
+        <div id="covered-list"></div>
+      </div>
+
+      <!-- AI Panel -->
+      <div class="ai-panel" id="ai-panel"></div>
+
+      <div class="restart-row">
+        <button class="btn-restart" id="btn-restart">Start New Assessment</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <span>© 2026 arnav.au · Free to use · No data is collected or stored</span>
+  </footer>
+
+  <!-- API Key Modal -->
+  <div class="modal-overlay" id="modal-api-key" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal">
+      <h3 id="modal-title">Generate AI Summary</h3>
+      <p>Enter your Anthropic API key to generate an executive summary using Claude. Your key is used client-side only and is never stored or sent anywhere other than the Anthropic API.</p>
+      <input
+        type="password"
+        id="api-key-input"
+        placeholder="sk-ant-..."
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <div class="modal-actions">
+        <button class="btn-cancel" id="btn-modal-cancel">Cancel</button>
+        <button class="btn-submit" id="btn-modal-submit">Generate</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

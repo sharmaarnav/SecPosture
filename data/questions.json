@@ -1,0 +1,272 @@
+[
+  {
+    "id": "IAM-001",
+    "domain": "Identity & Access",
+    "text": "Is MFA enforced for all users including admins?",
+    "weight": 3,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Enable MFA via Conditional Access (Azure), IAM Identity Center (AWS), or 2-Step Verification enforcement (GCP). Apply to all users with zero exceptions, including break-glass accounts protected by hardware tokens.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "IAM-002",
+    "domain": "Identity & Access",
+    "text": "Are privileged accounts (admin/root) separate from daily-use accounts?",
+    "weight": 3,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Create dedicated privileged accounts used only for admin tasks. Daily work should use standard-privilege identities. Use AWS Organizations SCPs, Azure PIM, or GCP Privileged Access Manager to constrain scope.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "IAM-003",
+    "domain": "Identity & Access",
+    "text": "Is least-privilege access applied to all service accounts and IAM roles?",
+    "weight": 3,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Audit all roles using IAM Access Analyzer (AWS), Azure AD Access Reviews, or GCP Policy Analyzer. Remove wildcard permissions. Apply just-in-time access where possible.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "IAM-004",
+    "domain": "Identity & Access",
+    "text": "Are inactive user accounts and unused credentials automatically disabled or reviewed?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Set automated lifecycle policies: disable accounts inactive for 90 days. Review IAM credential reports (AWS) or Azure AD sign-in logs monthly. Rotate or revoke unused access keys.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "IAM-005",
+    "domain": "Identity & Access",
+    "text": "Is Single Sign-On (SSO) used as the primary authentication method?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Integrate cloud consoles with a centralised IdP (Azure AD, Okta, Google Workspace). SSO reduces credential sprawl, enables centralised policy enforcement, and simplifies offboarding.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "IAM-006",
+    "domain": "Identity & Access",
+    "text": "Are long-lived access keys and static credentials actively managed and rotated?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Replace long-lived keys with short-lived credentials (AWS STS, GCP Workload Identity, Azure Managed Identities). Where static keys are unavoidable, enforce 90-day rotation and monitor for key age in CSPM tooling.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "NET-001",
+    "domain": "Network Security",
+    "text": "Is network segmentation implemented with security groups or VPC controls?",
+    "weight": 3,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Design networks with separate VPCs/VNets per environment (prod/dev/staging). Use security groups and NACLs (AWS), NSGs (Azure), or VPC firewall rules (GCP) to enforce micro-segmentation. Block all traffic by default.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "NET-002",
+    "domain": "Network Security",
+    "text": "Is public internet exposure of management interfaces (SSH, RDP, admin portals) blocked?",
+    "weight": 3,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Remove 0.0.0.0/0 inbound rules on ports 22, 3389, and admin ports. Require VPN or bastion host access. Use AWS Systems Manager Session Manager, Azure Bastion, or GCP IAP TCP Forwarding for zero-exposure access.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "NET-003",
+    "domain": "Network Security",
+    "text": "Is a Web Application Firewall (WAF) deployed in front of public-facing web applications?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Deploy AWS WAF with managed rule groups, Azure Front Door WAF, or Cloud Armor (GCP) in front of all internet-facing applications. Enable OWASP Top 10 rules and rate limiting.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "NET-004",
+    "domain": "Network Security",
+    "text": "Is DDoS protection enabled for public endpoints?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Enable AWS Shield Standard (automatic) or Shield Advanced for critical workloads. Use Azure DDoS Protection Standard for VNets. GCP Cloud Armor provides DDoS mitigation at the edge. Review thresholds annually.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "NET-005",
+    "domain": "Network Security",
+    "text": "Is all inter-service and east-west traffic encrypted in transit?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Enforce TLS 1.2+ for all internal service communication. Use service mesh (e.g., AWS App Mesh, Istio) for mTLS. Disable HTTP endpoints on internal load balancers and APIs. Enforce TLS policies on S3, Azure Storage, and GCS.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "DAT-001",
+    "domain": "Data Protection",
+    "text": "Is encryption at rest enabled for all storage buckets, databases, and disks?",
+    "weight": 3,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Enable SSE-S3 or SSE-KMS (AWS), Azure Storage Service Encryption, or Google-managed/CMEK encryption (GCP) for all storage. Verify database encryption settings. Use customer-managed keys (CMK/CMEK) for sensitive data.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "DAT-002",
+    "domain": "Data Protection",
+    "text": "Are cloud storage buckets and blob containers free of public read/write access?",
+    "weight": 3,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Enable S3 Block Public Access at the account and bucket level. Set Azure Storage containers to private. Remove allUsers/allAuthenticatedUsers from GCS bucket IAM. Use pre-signed URLs for temporary access instead.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "DAT-003",
+    "domain": "Data Protection",
+    "text": "Are automated backups configured and regularly tested for critical data?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Enable AWS Backup, Azure Backup, or GCP Backup and DR for all critical resources. Define RPO/RTO targets. Test restore procedures quarterly. Ensure backup data is stored in a separate region or account to protect against ransomware.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "DAT-004",
+    "domain": "Data Protection",
+    "text": "Is sensitive data classified and subject to stricter access controls?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Use Amazon Macie, Microsoft Purview, or Google Cloud DLP to discover and classify sensitive data (PII, PCI, PHI). Apply tags and enforce access policies based on classification. Encrypt classified data with CMKs.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "DAT-005",
+    "domain": "Data Protection",
+    "text": "Are secrets, API keys, and credentials stored in a dedicated secrets manager?",
+    "weight": 3,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Use AWS Secrets Manager, Azure Key Vault, or GCP Secret Manager. Never store secrets in environment variables, source code, or config files. Enable automatic secret rotation. Scan repositories for leaked credentials using tools like GitGuardian or Trufflehog.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "LOG-001",
+    "domain": "Logging & Monitoring",
+    "text": "Is comprehensive audit logging enabled across all cloud accounts and services?",
+    "weight": 3,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Enable AWS CloudTrail in all regions with S3 log storage and integrity validation. Enable Azure Monitor Activity Logs and Microsoft Defender for Cloud. Enable GCP Cloud Audit Logs for all services. Centralise logs to a SIEM.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "LOG-002",
+    "domain": "Logging & Monitoring",
+    "text": "Are alerts configured for high-risk events (root login, IAM changes, policy modifications)?",
+    "weight": 3,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Create CloudWatch Alarms or EventBridge rules (AWS) for root account usage, IAM policy changes, and security group modifications. Use Azure Monitor Alert Rules and GCP Log-based Alerts for equivalent events.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "LOG-003",
+    "domain": "Logging & Monitoring",
+    "text": "Are logs retained for a minimum of 12 months with tamper-evident storage?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Configure S3 Object Lock (AWS), Azure Storage immutability policies, or GCP Bucket Lock to prevent log deletion. Set lifecycle policies for 12-month minimum retention (90 days hot, remainder cold/archive). Enable CloudTrail log file validation.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "LOG-004",
+    "domain": "Logging & Monitoring",
+    "text": "Is a SIEM or centralised security monitoring platform in use?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Centralise logs to Microsoft Sentinel, Splunk, Elastic SIEM, or AWS Security Lake. Enable correlation rules for multi-step attack patterns. Ensure SOC or on-call team reviews critical alerts within defined SLA.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "LOG-005",
+    "domain": "Logging & Monitoring",
+    "text": "Is cloud-native threat detection (GuardDuty, Defender, SCC) enabled?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Enable Amazon GuardDuty across all regions and accounts in AWS Organizations. Enable Microsoft Defender for Cloud with Enhanced Security Features. Enable Google Security Command Center Standard or Premium tier. Review findings weekly.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "VUL-001",
+    "domain": "Vulnerability Management",
+    "text": "Are container images and cloud workloads scanned for vulnerabilities in CI/CD pipelines?",
+    "weight": 3,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Integrate Amazon Inspector, Azure Defender for Containers, or Artifact Registry vulnerability scanning (GCP) into CI/CD pipelines. Block deployments with critical/high CVEs. Scan base images on a scheduled basis even without code changes.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "VUL-002",
+    "domain": "Vulnerability Management",
+    "text": "Are operating systems and software packages on cloud instances patched within defined SLAs?",
+    "weight": 3,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Use AWS Systems Manager Patch Manager, Azure Update Manager, or OS Config (GCP) for automated patching. Define SLAs: critical vulnerabilities patched within 48h, high within 7 days. Use immutable infrastructure to replace rather than patch.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "VUL-003",
+    "domain": "Vulnerability Management",
+    "text": "Is infrastructure-as-code (IaC) scanned for misconfigurations before deployment?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Integrate Checkov, tfsec, Terrascan, or Snyk IaC into CI pipelines. Scan Terraform, CloudFormation, ARM templates, and Bicep files. Block merges with critical misconfigurations such as publicly accessible resources or missing encryption.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "VUL-004",
+    "domain": "Vulnerability Management",
+    "text": "Is a CSPM (Cloud Security Posture Management) tool actively used to detect misconfigurations?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Deploy AWS Security Hub with CIS benchmarks, Microsoft Defender for Cloud secure score, or GCP Security Command Center. Review findings weekly. Assign ownership for findings and track remediation via ticketing integration.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "VUL-005",
+    "domain": "Vulnerability Management",
+    "text": "Is penetration testing or red team assessment conducted at least annually?",
+    "weight": 1,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Engage a qualified third-party for annual penetration testing. Include cloud infrastructure, APIs, and web applications in scope. Remediate critical findings within 30 days. Follow AWS penetration testing policy and Azure penetration testing rules of engagement.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "GOV-001",
+    "domain": "Governance & Compliance",
+    "text": "Is there a documented cloud security policy reviewed at least annually?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Establish a cloud security policy covering acceptable use, data classification, incident response, and access management. Review annually or after significant changes. Publish in a policy management tool or intranet. Consider secpolicy.arnav.au for policy templates.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "GOV-002",
+    "domain": "Governance & Compliance",
+    "text": "Are cloud resources tagged with owner, environment, and data classification metadata?",
+    "weight": 1,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Enforce mandatory tags (owner, environment, cost-centre, data-classification) using AWS Tag Policies, Azure Policy, or GCP Resource Manager. Remediate untagged resources. Use tags to drive security controls and cost allocation.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "GOV-003",
+    "domain": "Governance & Compliance",
+    "text": "Is there a documented and tested incident response plan for cloud security events?",
+    "weight": 3,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Define runbooks for key incident types: compromised credentials, data breach, ransomware, and cloud misconfiguration. Test via tabletop exercises twice yearly. Include cloud provider emergency contacts and evidence preservation steps. Store runbooks offline.",
+    "secframe_link": "https://secframe.arnav.au"
+  },
+  {
+    "id": "GOV-004",
+    "domain": "Governance & Compliance",
+    "text": "Are third-party and supply chain risks assessed before granting cloud access?",
+    "weight": 2,
+    "cloud": ["azure", "aws", "gcp", "multi"],
+    "remediation": "Implement a vendor risk assessment process before granting third-party access. Use cross-account roles with minimal permissions (AWS), Azure AD B2B with Conditional Access, or GCP Workload Identity Federation. Review third-party access quarterly and remove stale access.",
+    "secframe_link": "https://secframe.arnav.au"
+  }
+]
